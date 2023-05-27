@@ -11,6 +11,16 @@ cd /etc
 curl -fsSL https://get.docker.com -o get-docker.sh
 sudo sh get-docker.sh
 
+# Install Wings
+# For info purposes: The panel handles the transferring of servers off and on, not any of our daemons
+mkdir -p /etc/pterodactyl
+curl -L -o /usr/local/bin/wings "https://github.com/pterodactyl/wings/releases/latest/download/wings_linux_$([[ "$(uname -m)" == "x86_64" ]] && echo "amd64" || echo "arm64")"
+chmod u+x /usr/local/bin/wings
+apt install certbot -y
+# Once Wings is online and connected as an Edge cluster, the MCX handler will be installed as a container and deployed
+
+# Soon: Automate the edge cluster installation system, for now someone needs to manually generate a command and connect it
+
 # Create a directory for the app
 mkdir martian
 cd martian
@@ -25,7 +35,7 @@ npm init -y
 # Install required packages
 npm install express systeminformation
 
-# Create the app file
+# Create the app file for Info Daemon (we need this info to calculate earnings)
 echo "
 const express = require('express');
 const si = require('systeminformation');
